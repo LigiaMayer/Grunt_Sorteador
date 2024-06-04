@@ -1,22 +1,22 @@
-@fontePrincipal:Roboto, sans-serif;
-@fonteDoTitulo:Losbter,cursiva;
-@corTexto:#fff;
-@corDeFundo:#311c996f;
-@corDeTextoButton:#000;
-@corDeFundoButton:#f7b731;
+@fontePrincipal: Roboto, sans-serif;
+@fonteDoTitulo: Lobster, cursive;
+@corTexto: #fff;
+@corDeFundo: #0abab5;
+@corDeTextoButton: #000;
+@corDeFundoButton: #f7b731;
 
-body{
+body {
     background-color: @corDeFundo;
     font-family: @fontePrincipal;
     color: @corTexto;
 }
 
-h1{
+h1 {
     font-family: @fonteDoTitulo;
-    font-size: 3m;
+    font-size: 3em; 
 }
 
-main{
+main {
     max-width: 960px;
     width: 100%;
     margin: 0 auto;
@@ -24,7 +24,7 @@ main{
     text-align: center;
 }
 
-button{
+button {
     padding: 16px;
     cursor: pointer;
     font-weight: bold;
@@ -32,11 +32,11 @@ button{
     margin-top: 16px;
     border-radius: 8px;
     background-color: @corDeFundoButton;
-    color:@corDeTextoButton;
+    color: @corDeTextoButton;
     font-family: @fontePrincipal;
 }
 
-input{
+input {
     display: block;
     margin: 16px auto 0;
     font-size: 2em;
@@ -48,14 +48,14 @@ input{
     border-bottom: 6px solid #fff;
 }
 
-.resultado{
+.resultado {
     padding: 16px;
     margin-top: 120px;
     border: 8px dotted #fff;
     display: none;
 }
 
-span{
+span {
     font-weight: bold;
     font-size: 2em;
 }

@@ -1,6 +1,6 @@
-module.exports = function(grunt) {
+module.exports = function(grunt){
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: grunt.file.readJSON("package.json"),
         less: {
             development: {
                 files: {
@@ -8,77 +8,101 @@ module.exports = function(grunt) {
                 }
             },
             production: {
-                options: {      
-                    compress: true,
+                options: {
+                    compress: true
                 },
                 files: {
-                    'dist/styles/main.min.css': 'src/styles/main.less'
+                    'dist/styles/main.min.css': 'src/styles/main.less' 
                 }
             }
         },
-        watch :{
-            less :{
-                files :['src/styles/**/*.less'],     // -> /** : acessa qualquer pasta dentro de styles e /* qualquer arquivo dentro de qualquer pasta
-                tasks :[ 'less:development']
+        watch: {
+            less: {
+                files: ['src/styles/**/*.less'],
+                tasks: ['less:development']
             },
             html:{
                 files:['src/index.html'],
                 tasks:['replace:dev']
             }
         },
-        replace:{
-            dev :{
-                options :{
-                    patterns:[
+        replace: {
+            dev: {
+                options: {
+                    patterns: [
                         {
-                            match : 'ENDERECO_DO_CSS' , //palavra a ser encontrada
-                            replacement: './styles/main.css' 
+                            match: 'ENDERECO_DE_CSS',
+                            replacement: './styles/main.css'
                         },
                         {
-                            match : 'ENDERECO_DO_JS' , //palavra a ser encontrada
-                            replacement: './styles/main.css' 
+                            match: 'ENDERECO_DE_JS',
+                            replacement: '../src/scripts/main.js'
                         }
-                    ]     // um array que vai conter as palavras que desejamos que o plugins faça o replace  -> encontra palavra e troca pelo valor que definimos
+                    ]
                 },
-                files:[   // foi colocado de maneira que a identação fique com o options
+                files: [
                     {
-                        expand : true,
-                        flatte:true,
-                        src:['src/index.html'],  //arquivo raiz para a substituição
-                        dest:'dev/'
+                        expand: true,
+                        flatten: true,
+                        src: ['src/index.html'],
+                        dest: 'dev/'
+                    }
+                ]
+            },
+            dist: {
+                options: {
+                    patterns: [
+                        {
+                            match: 'ENDERECO_DE_CSS',
+                            replacement: './styles/main.min.css'
+                        },
+                        {
+                            match: 'ENDERECO_DE_JS',
+                            replacement: './scripts/main.min.js'
+                        }
+                    ]
+                },
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        src: ['prebuild/index.html'],
+                        dest: 'dist/'
                     }
                 ]
             }
         },
-        htmlmin:{
-            dist:{
-                options :{
-                    removeComments:true,
-                    collapseWhitespace:true, // todo espaço em branco é apagado
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComents: true,
+                    collapseWhitespace: true
                 },
-                files:{
-                    'prebuild/index.hmtl': 'src/index.html'
-
+                files: {
+                    'prebuild/index.html': 'src/index.html' 
                 }
             }
         },
-        clean:['prebuild']
+        clean:['prebuild'],
+        uglify:{
+            target:{
+                files:{
+                    'dist/scripts/main.min.js' : 'src/scripts/main.js'
+                }
+            }
+        }
+    });
 
-    })
-
-    // Carrega o plugin Grunt-contrib-less
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-replace');
-    grunt.loadNpmTasks('grunt-contrib-htmlmin')
-    grunt.loadNpmTasks('grunt-contrib-clean')
-
-
-
-    // Registra as tarefas Grunt
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['less:production','htmlmin:dist','replace','clean']);
-};  
+    grunt.registerTask('build', ['less:production', 'htmlmin:dist', 'replace:dist','clean','uglify']);
+}
 
 // comando npm run build Quando você executa npm run build, o npm procura pelo script "build" no arquivo package.json e executa o comando associado a ele. 
 //no package.json o build esta no script --> "build": "grunt build" module.exports = function (grunt) {
