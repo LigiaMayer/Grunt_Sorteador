@@ -1,18 +1,22 @@
-module.exports = function(grunt){
+module.exports = function (grunt) {
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
+        pkg: grunt.file.readJSON('package.json'),
         less: {
             development: {
+                options: {
+                    compress: true,
+                    optimization: 2
+                },
                 files: {
                     'dev/styles/main.css': 'src/styles/main.less'
                 }
             },
             production: {
                 options: {
-                    compress: true
+                    compress: true,
                 },
                 files: {
-                    'dist/styles/main.min.css': 'src/styles/main.less' 
+                    'dist/styles/main.min.css': 'src/styles/main.less'
                 }
             }
         },
@@ -21,9 +25,9 @@ module.exports = function(grunt){
                 files: ['src/styles/**/*.less'],
                 tasks: ['less:development']
             },
-            html:{
-                files:['src/index.html'],
-                tasks:['replace:dev']
+            html: {
+                files: ['src/index.html'],
+                tasks: ['replace:dev']
             }
         },
         replace: {
@@ -31,12 +35,12 @@ module.exports = function(grunt){
                 options: {
                     patterns: [
                         {
-                            match: 'ENDERECO_DE_CSS',
+                            match: 'ENDERECO_DO_CSS',
                             replacement: './styles/main.css'
                         },
                         {
-                            match: 'ENDERECO_DE_JS',
-                            replacement: '../src/scripts/main.js'
+                            match: 'ENDERECO_DO_JS',
+                            replacement: './scripts/main.js'
                         }
                     ]
                 },
@@ -46,6 +50,9 @@ module.exports = function(grunt){
                         flatten: true,
                         src: ['src/index.html'],
                         dest: 'dev/'
+                    }, {
+                        src: ["src/scripts/*.js"],
+                        dest: 'dev/scripts/main.js'
                     }
                 ]
             },
@@ -53,11 +60,11 @@ module.exports = function(grunt){
                 options: {
                     patterns: [
                         {
-                            match: 'ENDERECO_DE_CSS',
+                            match: 'ENDERECO_DO_CSS',
                             replacement: './styles/main.min.css'
                         },
                         {
-                            match: 'ENDERECO_DE_JS',
+                            match: 'ENDERECO_DO_JS',
                             replacement: './scripts/main.min.js'
                         }
                     ]
@@ -75,23 +82,23 @@ module.exports = function(grunt){
         htmlmin: {
             dist: {
                 options: {
-                    removeComents: true,
-                    collapseWhitespace: true
+                    removeComments: true,
+                    collapseWhitespace: true,
                 },
                 files: {
-                    'prebuild/index.html': 'src/index.html' 
+                    'prebuild/index.html': 'src/index.html'
                 }
             }
         },
-        clean:['prebuild'],
+        clean: ['prebuild'],
         uglify:{
-            target:{
-                files:{
-                    'dist/scripts/main.min.js' : 'src/scripts/main.js'
-                }
-            }
+    target:{
+    files:{
+    'dist/scripts/main.min.js':'src/scripts/main.js'
         }
-    });
+        }
+        }
+    })
 
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -99,9 +106,9 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    
+
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['less:production', 'htmlmin:dist', 'replace:dist','clean','uglify']);
+    grunt.registerTask('build', ['less', 'htmlmin', 'replace', 'clean','uglify']);
 }
 
 // comando npm run build Quando você executa npm run build, o npm procura pelo script "build" no arquivo package.json e executa o comando associado a ele. 
